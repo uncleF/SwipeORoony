@@ -1,0 +1,15 @@
+{
+	"private" : true,
+	"devDependencies" : {
+		"grunt": "~0.4.5",
+		"load-grunt-tasks": "*",
+		"grunt-contrib-jshint": "*",
+		"grunt-jsinspect": "*",
+		"grunt-remove-logging": "*",
+		"grunt-fixmyjs": "*",
+		"grunt-contrib-uglify": "*",
+		"grunt-contrib-clean": "*",
+		"grunt-contrib-copy": "*",
+		"grunt-contrib-compress": "*"
+	}
+}

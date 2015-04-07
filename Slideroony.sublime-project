@@ -1,0 +1,27 @@
+{
+	"folders":
+	[
+		{
+			"folder_exclude_patterns":
+			[
+				"*"
+			],
+			"file_exclude_patterns":
+			[
+				"*.zip",
+				"*.sublime-project"
+			],
+			"follow_symlinks": true,
+			"name": "Slideroony: Project",
+			"path": "."
+		}, {
+			"follow_symlinks": true,
+			"name": "Slideroony: Demo",
+			"path": "demo"
+		}, {
+			"follow_symlinks": true,
+			"name": "Slideroony: JavaScript",
+			"path": "src"
+		}
+	]
+}
