@@ -3,6 +3,7 @@
 	"devDependencies" : {
 		"grunt": "~0.4.5",
 		"load-grunt-tasks": "*",
+		"grunt-jscs": "*",
 		"grunt-contrib-jshint": "*",
 		"grunt-jsinspect": "*",
 		"grunt-remove-logging": "*",

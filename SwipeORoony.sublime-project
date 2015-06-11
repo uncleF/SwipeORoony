@@ -12,16 +12,16 @@
 				"*.sublime-project"
 			],
 			"follow_symlinks": true,
-			"name": "Slideroony: Project",
+			"name": "SwipeORoony: Project",
 			"path": "."
 		}, {
 			"follow_symlinks": true,
-			"name": "Slideroony: Demo",
+			"name": "SwipeORoony: Demo",
 			"path": "demo"
 		}, {
 			"follow_symlinks": true,
-			"name": "Slideroony: JavaScript",
-			"path": "src"
+			"name": "SwipeORoony: Development",
+			"path": "dev"
 		}
 	]
 }
