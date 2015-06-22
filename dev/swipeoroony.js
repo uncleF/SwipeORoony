@@ -1,3 +1,5 @@
+/* exported initSwipe, generateDots */
+
 function initSwipe(object, parent, links, linkClass, document, window, body, transition) {
   object.on('touchstart', function (event) {
     if (!object.is('.galleryImageView-is-fixing')) {

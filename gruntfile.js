@@ -1,4 +1,4 @@
-//Gruntfile for the Slideroony Project
+//Gruntfile for the Swipe-o-roony Project
 
 var BUILD_DIR         = 'src',          // Project Build
     DEVELOPMENT_DIR   = 'dev',          // Project Development

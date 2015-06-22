@@ -1,3 +1,4 @@
+/* exported initSwipe, generateDots */
 function initSwipe(object, parent, links, linkClass, document, window, body, transition) {
   object.on('touchstart', function (event) {
     if (!object.is('.galleryImageView-is-fixing')) {
@@ -57,21 +58,21 @@ function initSwipe(object, parent, links, linkClass, document, window, body, tra
     }
   });
 }
-function generateDots(SIZE, LIST_CLASS, PAGE_CLASS) {
-  var NAVIGATION = '<ul class="' + LIST_CLASS + ' js-dotsNavigation u-listReset">';
-  for (var index = 0; index < SIZE; index++) {
-    NAVIGATION = index === 0 ? NAVIGATION + '<li class="' + PAGE_CLASS + ' ' + PAGE_CLASS + '-is-active js-dotsPage-is-active js-dotsPage"></li>' : NAVIGATION + '<li class="' + PAGE_CLASS + ' js-dotsPage"></li>';
+function generateDots(size, listClass, pageClass) {
+  var navigation = '<ul class="' + listClass + ' js-dotsNavigation u-listReset">';
+  for (var index = 0; index < size; index++) {
+    navigation = index === 0 ? navigation + '<li class="' + pageClass + ' ' + pageClass + '-is-active js-dotsPage-is-active js-dotsPage"></li>' : navigation + '<li class="' + pageClass + ' js-dotsPage"></li>';
   }
-  NAVIGATION += '</ul>';
-  return NAVIGATION;
+  navigation += '</ul>';
+  return navigation;
 }
-function translateGallery(DISTANCE) {
-  var CSS = {
-    '-webkit-transform': 'translateX(' + DISTANCE + ') translateZ(0)',
-    '-moz-transform': 'translateX(' + DISTANCE + ') translateZ(0)',
-    '-ms-transform': 'translateX(' + DISTANCE + ')',
-    '-o-transform': 'translateX(' + DISTANCE + ')',
-    'transform': 'translateX(' + DISTANCE + ') translateZ(0)'
+function translateGallery(distance) {
+  var css = {
+    '-webkit-transform': 'translateX(' + distance + ') translateZ(0)',
+    '-moz-transform': 'translateX(' + distance + ') translateZ(0)',
+    '-ms-transform': 'translateX(' + distance + ')',
+    '-o-transform': 'translateX(' + distance + ')',
+    'transform': 'translateX(' + distance + ') translateZ(0)'
   };
-  return CSS;
+  return css;
 }
