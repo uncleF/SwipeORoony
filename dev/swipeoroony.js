@@ -1,7 +1,7 @@
 /* exported initSwipe, generateDots */
 
 function initSwipe(object, parent, links, linkClass, document, window, body, transition) {
-  object.on('touchstart', function (event) {
+  object.on('touchstart', function(event) {
     if (!object.is('.galleryImageView-is-fixing')) {
       var objectWidth = parent.width();
       var objectPadding = parent.css('padding-left').replace('px', '') - 0;
@@ -19,7 +19,7 @@ function initSwipe(object, parent, links, linkClass, document, window, body, tra
       } else if (linkActive.is(links.find('.' + linkClass + ':last'))) {
         galleryStatus = 'end';
       }
-      document.on('touchmove', function (event) {
+      document.on('touchmove', function(event) {
         pointDiffX = event.originalEvent.touches[0].pageX - pointStartX;
         pointDiffY = event.originalEvent.touches[0].pageY - pointStartY;
         if (Math.abs(pointDiffX) > 15) {
@@ -34,7 +34,7 @@ function initSwipe(object, parent, links, linkClass, document, window, body, tra
           }
           object.css(translateGallery(positionStart + pointDiffX / pointShift + pointDiffXMargin + 'px'));
         }
-      }).on('touchend', function (event) {
+      }).on('touchend', function(event) {
         document.off('touchmove touchend');
         if (Math.abs(pointDiffX) > 15) {
           if (pointDiffX > 50 && galleryStatus !== 'start') {
@@ -47,11 +47,11 @@ function initSwipe(object, parent, links, linkClass, document, window, body, tra
           object.addClass('slides-are-fixing');
           object.data('activeBlock', index);
           object.trigger('gallerySwipe');
-          object.on(transition, function (event) {
+          object.on(transition, function(event) {
             object.removeClass('slides-are-fixing');
             object.off(transition);
           });
-          setTimeout(function () {
+          setTimeout(function() {
             object.css(translateGallery(objectWidth * -index + 'px'));
           }, 15);
         }
@@ -69,13 +69,18 @@ function generateDots(size, listClass, pageClass) {
   return navigation;
 }
 
-function translateGallery(distance) {
-  var css = {
-    '-webkit-transform': 'translateX(' + distance + ') translateZ(0)',
-    '-moz-transform': 'translateX(' + distance + ') translateZ(0)',
-    '-ms-transform': 'translateX(' + distance + ')',
-    '-o-transform': 'translateX(' + distance + ')',
-    'transform': 'translateX(' + distance + ') translateZ(0)'
-  };
+function translateGallery(distance, output) {
+  var css;
+  if (output === 'string') {
+    css = '-webkit-transform : translateX(' + distance + ') translateZ(0); -moz-transform : translateX(' + distance + ') translateZ(0); -ms-transform : translateX(' + distance + '); -o-transform : translateX(' + distance + '); transform : translateX(' + distance + ') translateZ(0)';
+  } else {
+    css = {
+      '-webkit-transform': 'translateX(' + distance + ') translateZ(0)',
+      '-moz-transform': 'translateX(' + distance + ') translateZ(0)',
+      '-ms-transform': 'translateX(' + distance + ')',
+      '-o-transform': 'translateX(' + distance + ')',
+      'transform': 'translateX(' + distance + ') translateZ(0)'
+    };
+  }
   return css;
 }

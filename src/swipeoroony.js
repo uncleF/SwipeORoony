@@ -66,13 +66,18 @@ function generateDots(size, listClass, pageClass) {
   navigation += '</ul>';
   return navigation;
 }
-function translateGallery(distance) {
-  var css = {
-    '-webkit-transform': 'translateX(' + distance + ') translateZ(0)',
-    '-moz-transform': 'translateX(' + distance + ') translateZ(0)',
-    '-ms-transform': 'translateX(' + distance + ')',
-    '-o-transform': 'translateX(' + distance + ')',
-    'transform': 'translateX(' + distance + ') translateZ(0)'
-  };
+function translateGallery(distance, output) {
+  var css;
+  if (output === 'string') {
+    css = '-webkit-transform : translateX(' + distance + ') translateZ(0); -moz-transform : translateX(' + distance + ') translateZ(0); -ms-transform : translateX(' + distance + '); -o-transform : translateX(' + distance + '); transform : translateX(' + distance + ') translateZ(0)';
+  } else {
+    css = {
+      '-webkit-transform': 'translateX(' + distance + ') translateZ(0)',
+      '-moz-transform': 'translateX(' + distance + ') translateZ(0)',
+      '-ms-transform': 'translateX(' + distance + ')',
+      '-o-transform': 'translateX(' + distance + ')',
+      'transform': 'translateX(' + distance + ') translateZ(0)'
+    };
+  }
   return css;
 }
