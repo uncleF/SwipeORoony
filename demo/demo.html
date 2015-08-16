@@ -1,179 +1,65 @@
 <!DOCTYPE html>
 
 <html>
-	
-	<head>
-		<title>Slideroony Demo</title>
-		<meta charset="utf-8">
-		<meta http-equiv="X-UA-Compatible" content="IE=edge">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<style>
 
-			html {
-				height: 100%;
-				text-align: center;
-			}
+  <head>
+    <title>Slideroony Demo</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="styles.css">
+  </head>
 
-			body {
-				position: relative;
-				height: 100%;
-				margin: 0;
-				padding: 0; 
-				font-family: sans-serif;
-			}
+  <body>
+    <div class="sliderHolder">
+      <div class="slides">
+        <div class="slide slide1">
+          Slide 1
+        </div><div class="slide slide2">
+          Slide 2
+        </div><div class="slide slide3">
+          Slide 3
+        </div><div class="slide slide4">
+          Slide 4
+        </div><div class="slide slide5">
+          Slide 5
+        </div>
+      </div>
+    </div>
+    <script type="text/javascript" src="jquery.min.js"></script>
+    <script type="text/javascript" src="swipeoroony.min.js"></script>
+    <script type="text/javascript">
 
-			body:before {
-				display: inline-block;
-				content: "";
-				position: relative;
-				width: 0;
-				height: 100%;
-				margin: 0 -5px 0 0;
-				vertical-align: middle;
-			}
+      function whichTransitionEndEvent() {
+        var TRANSITION;
+        var ELEMENT = document.createElement('element');
+        var TRANSITIONS = {
+          'transition': 'transitionend',
+          'oTransition': 'oTransitionEnd',
+          'MSTransition': 'MSTransitionEnd',
+          'MozTransition': 'transitionend',
+          'WebkitTransition': 'webkitTransitionEnd'
+        };
+        for (TRANSITION in TRANSITIONS) {
+          if (ELEMENT.style[TRANSITION] !== undefined) {
+            return TRANSITIONS[TRANSITION];
+          }
+        }
+      }
 
-			.sliderHolder {
-				display: inline-block;
-				width: 100%;
-				color: #fff;
-				font-size: 4em;
-				vertical-align: middle;
-				white-space: nowrap;
-				overflow: hidden;
-			}
+      $(document).ready(function() {
 
-			.slides {
-				position: relative;
-			}
+        var DOCUMENT = $(document);
+        var TRANSITION = whichTransitionEndEvent();
 
-			.slides:before {
-				display: block;
-				content: "";
-				position: absolute;
-				width: 10000px;
-				top: 0;
-				bottom: 0;
-				left: 0;
-				z-index: -1;
-			}
+        var slides = $('.slides');
+        var dotsSize = $('.slide').size();
+        slides.after(generateDots(dotsSize, 'js-slidesNavigation', 'js-slidesNavigationPage'));
+        var slidesLinks = $('.js-slidesNavigationPage');
+        initSwipe(slides, slidesLinks, 'js-slidesNavigationPage', DOCUMENT, TRANSITION);
 
-			.slide {
-				display: inline-block;
-				position: relative;
-				width: 100%;
-				line-height: 300px;
-				vertical-align: top;
-				z-index: -1;
-				border-radius: 10px;
-			}
+      });
 
-			.slide1 {
-				background: red;
-			}
-
-			.slide2 {
-				background: orange;
-			}
-
-			.slide3 {
-				background: yellow;
-			}
-
-			.slide4 {
-				background: green;
-			}
-
-			.slide5 {
-				background: blue;
-			}
-
-			.js-slidesNavigation {
-				height: 5px;
-				margin: 20px 0 0;
-				padding: 0;
-				text-align: center;
-			}
-
-			.js-slidesNavigationPage {
-				display: inline-block;
-				width: 5px;
-				height: 5px;
-				margin: 0 5px;
-				background: gray;
-				font-size: 0;
-				vertical-align: top;
-				border-radius: 50%;
-				overflow: hidden;
-			}
-
-			.js-slidesNavigationPage-is-active {
-				background: black;
-			}
-
-			.slides-are-fixing {
-				-webkit-transition: .25s;
-				-moz-transition: .25s;
-				-ms-transition: .25s;
-				transition: .25s;
-			}
-
-		</style>
-	</head>
-
-	<body>
-		<div class="sliderHolder">
-			<div class="slides">
-				<div class="slide slide1">
-					Slide 1
-				</div><div class="slide slide2">
-					Slide 2
-				</div><div class="slide slide3">
-					Slide 3
-				</div><div class="slide slide4">
-					Slide 4
-				</div><div class="slide slide5">
-					Slide 5
-				</div>
-			</div>
-		</div>
-		<script type="text/javascript" src="jquery.min.js"></script>
-		<script type="text/javascript" src="slideroony.min.js"></script>
-		<script type="text/javascript">
-
-			function whichTransitionEndEvent() {
-				var TRANSITION;
-				var ELEMENT = document.createElement("element");
-				var TRANSITIONS = {
-					"transition": "transitionend",
-					"oTransition": "oTransitionEnd",
-					"MSTransition": "MSTransitionEnd",
-					"MozTransition": "transitionend",
-					"WebkitTransition": "webkitTransitionEnd"
-				};
-				for(TRANSITION in TRANSITIONS){
-					if(ELEMENT.style[TRANSITION] !== undefined) {
-						return TRANSITIONS[TRANSITION];
-					}
-				}
-			}
-
-			$(document).ready(function() {
-
-				var DOCUMENT = $(document),
-						WINDOW = $(window),
-						BODY = $("body"),
-						TRANSITION = whichTransitionEndEvent();
-
-				var SLIDES = $(".slides"),
-						DOTS_SIZES = $(".slide").size();
-				SLIDES.after(generateDots(DOTS_SIZES, "js-slidesNavigation", "js-slidesNavigationPage"));
-				var SLIDES_PARENT = SLIDES.parent(),
-						SLIDES_LINKS = SLIDES_PARENT.find(".js-slidesNavigation");
-				initSwipe(SLIDES, SLIDES_PARENT, SLIDES_LINKS, "js-slidesNavigationPage", DOCUMENT, WINDOW, BODY, TRANSITION);
-
-			});
-
-		</script>
-	</body>
+    </script>
+  </body>
 
 </html>

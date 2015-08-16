@@ -1,39 +1,39 @@
 /* exported initSwipe, generateDots */
-function initSwipe(object, parent, links, linkClass, document, window, body, transition) {
-  object.on('touchstart', function (event) {
-    if (!object.is('.galleryImageView-is-fixing')) {
-      var objectWidth = parent.width();
-      var objectPadding = parent.css('padding-left').replace('px', '') - 0;
+
+function initSwipe(object, links, linkClass, document, transition) {
+  object.on('touchstart', function(event) {
+    if (!object.is('.slides-are-fixing')) {
       var pointStartX = event.originalEvent.touches[0].pageX;
       var pointStartY = event.originalEvent.touches[0].pageY;
       var pointDiffX = 0;
       var pointDiffY = 0;
       var pointShift = 1;
       var positionStart = object.offset().left;
-      var linkActive = links.find('.' + linkClass + '-is-active');
-      var index = links.find('.' + linkClass).index(linkActive);
+      var linkActive = links.filter('.' + linkClass + '-is-active');
+      var index = links.index(linkActive);
       var galleryStatus = 'middle';
-      if (linkActive.is(links.find('.' + linkClass + ':first'))) {
+      if (index === 0) {
         galleryStatus = 'start';
-      } else if (linkActive.is(links.find('.' + linkClass + ':last'))) {
+      } else if (index === (links.size() - 1)) {
         galleryStatus = 'end';
       }
-      document.on('touchmove', function (event) {
+      document.on('touchmove', function(event) {
         pointDiffX = event.originalEvent.touches[0].pageX - pointStartX;
         pointDiffY = event.originalEvent.touches[0].pageY - pointStartY;
         if (Math.abs(pointDiffX) > 15) {
+          event.preventDefault();
           pointDiffY = 0;
-          var pointDiffXMargin = pointDiffX < 0 ? 15 - objectPadding : -15 - objectPadding;
+          var pointDiffXMargin = pointDiffX < 0 ? 15 : -15;
           if (galleryStatus === 'start' && pointDiffX > 0) {
             pointShift = 4;
-            pointDiffXMargin = -4 - objectPadding;
+            pointDiffXMargin = -4;
           } else if (galleryStatus === 'end' && pointDiffX < 0) {
             pointShift = 4;
-            pointDiffXMargin = 4 - objectPadding;
+            pointDiffXMargin = 4;
           }
           object.css(translateGallery(positionStart + pointDiffX / pointShift + pointDiffXMargin + 'px'));
         }
-      }).on('touchend', function (event) {
+      }).on('touchend', function(event) {
         document.off('touchmove touchend');
         if (Math.abs(pointDiffX) > 15) {
           if (pointDiffX > 50 && galleryStatus !== 'start') {
@@ -42,22 +42,19 @@ function initSwipe(object, parent, links, linkClass, document, window, body, tra
             index += 1;
           }
           linkActive.removeClass(linkClass + '-is-active js-dotsPage-is-active');
-          links.find('.' + linkClass + ':eq(' + index + ')').addClass(linkClass + '-is-active js-dotsPage-is-active');
-          object.addClass('slides-are-fixing');
-          object.data('activeBlock', index);
-          object.trigger('gallerySwipe');
-          object.on(transition, function (event) {
+          links.filter('.' + linkClass + ':eq(' + index + ')').addClass(linkClass + '-is-active js-dotsPage-is-active');
+          object.addClass('slides-are-fixing').trigger('swipe');
+          object.on(transition, function(event) {
             object.removeClass('slides-are-fixing');
             object.off(transition);
           });
-          setTimeout(function () {
-            object.css(translateGallery(objectWidth * -index + 'px'));
-          }, 15);
+          object.css(translateGallery(-100 * index + '%'));
         }
       });
     }
   });
 }
+
 function generateDots(size, listClass, pageClass) {
   var navigation = '<ul class="' + listClass + ' js-dotsNavigation u-listReset">';
   for (var index = 0; index < size; index++) {
@@ -66,6 +63,7 @@ function generateDots(size, listClass, pageClass) {
   navigation += '</ul>';
   return navigation;
 }
+
 function translateGallery(distance, output) {
   var css;
   if (output === 'string') {

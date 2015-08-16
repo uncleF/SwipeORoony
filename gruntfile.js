@@ -65,6 +65,7 @@ module.exports = function(grunt) {
         cwd: project.build,
         src: ['*.js'],
         dest: project.build,
+        ext: '.min.js',
         expand: true
       }
     },
@@ -74,7 +75,7 @@ module.exports = function(grunt) {
       },
       jsMin: {
         cwd: project.build,
-        src: ['*.js'],
+        src: ['*.min.js'],
         dest: project.build,
         ext: '.min.js',
         expand: true
