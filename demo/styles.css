@@ -33,6 +33,7 @@ body:before {
 
 .slides {
   position: relative;
+  transform: translateZ(0);
 }
 
 .slides:before {
@@ -52,8 +53,7 @@ body:before {
   width: 100%;
   line-height: 300px;
   vertical-align: top;
-  z-index: -1;
-  border-radius: 10px;
+  transform: translateZ(0);
 }
 
 .slide1 {
@@ -104,4 +104,9 @@ body:before {
   -moz-transition: .25s;
   -ms-transition: .25s;
   transition: .25s;
+}
+
+.slides-are-swiping {
+  user-select: none;
+  pointer-events: none;
 }

@@ -1,12 +1,10 @@
 /* exported initSwipe, generateDots */
 
-function initSwipe(object, links, linkClass, document, transition) {
+function initSwipe(object, links, linkClass, doc, transition) {
   object.on('touchstart', function(event) {
     if (!object.is('.slides-are-fixing')) {
       var pointStartX = event.originalEvent.touches[0].pageX;
-      var pointStartY = event.originalEvent.touches[0].pageY;
       var pointDiffX = 0;
-      var pointDiffY = 0;
       var pointShift = 1;
       var positionStart = object.offset().left;
       var linkActive = links.filter('.' + linkClass + '-is-active');
@@ -17,39 +15,41 @@ function initSwipe(object, links, linkClass, document, transition) {
       } else if (index === (links.size() - 1)) {
         galleryStatus = 'end';
       }
-      document.on('touchmove', function(event) {
+      doc.on('touchmove', function(event) {
         pointDiffX = event.originalEvent.touches[0].pageX - pointStartX;
-        pointDiffY = event.originalEvent.touches[0].pageY - pointStartY;
         if (Math.abs(pointDiffX) > 15) {
           event.preventDefault();
-          pointDiffY = 0;
-          var pointDiffXMargin = pointDiffX < 0 ? 15 : -15;
-          if (galleryStatus === 'start' && pointDiffX > 0) {
-            pointShift = 4;
-            pointDiffXMargin = -4;
-          } else if (galleryStatus === 'end' && pointDiffX < 0) {
-            pointShift = 4;
-            pointDiffXMargin = 4;
-          }
-          object.css(translateGallery(positionStart + pointDiffX / pointShift + pointDiffXMargin + 'px'));
+          requestAnimationFrame(function() {
+            var pointDiffXMargin = pointDiffX < 0 ? 15 : -15;
+            if (galleryStatus === 'start' && pointDiffX > 0) {
+              pointShift = 4;
+              pointDiffXMargin = -4;
+            } else if (galleryStatus === 'end' && pointDiffX < 0) {
+              pointShift = 4;
+              pointDiffXMargin = 4;
+            }
+            object.css(translateGallery(positionStart + pointDiffX / pointShift + pointDiffXMargin + 'px'));
+          });
         }
       }).on('touchend', function(event) {
-        document.off('touchmove touchend');
-        if (Math.abs(pointDiffX) > 15) {
-          if (pointDiffX > 50 && galleryStatus !== 'start') {
-            index -= 1;
-          } else if (pointDiffX < -50 && galleryStatus !== 'end') {
-            index += 1;
+        doc.off('touchmove touchend');
+        requestAnimationFrame(function() {
+          if (Math.abs(pointDiffX) > 15) {
+            if (pointDiffX > 50 && galleryStatus !== 'start') {
+              index -= 1;
+            } else if (pointDiffX < -50 && galleryStatus !== 'end') {
+              index += 1;
+            }
+            linkActive.removeClass(linkClass + '-is-active js-dotsPage-is-active');
+            links.filter('.' + linkClass + ':eq(' + index + ')').addClass(linkClass + '-is-active js-dotsPage-is-active');
+            object.addClass('slides-are-fixing').trigger('swipe');
+            object.on(transition, function(event) {
+              object.removeClass('slides-are-fixing');
+              object.off(transition);
+            });
+            object.css(translateGallery(-100 * index + '%'));
           }
-          linkActive.removeClass(linkClass + '-is-active js-dotsPage-is-active');
-          links.filter('.' + linkClass + ':eq(' + index + ')').addClass(linkClass + '-is-active js-dotsPage-is-active');
-          object.addClass('slides-are-fixing').trigger('swipe');
-          object.on(transition, function(event) {
-            object.removeClass('slides-are-fixing');
-            object.off(transition);
-          });
-          object.css(translateGallery(-100 * index + '%'));
-        }
+        });
       });
     }
   });

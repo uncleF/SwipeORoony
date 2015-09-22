@@ -26,7 +26,7 @@
       </div>
     </div>
     <script type="text/javascript" src="jquery.min.js"></script>
-    <script type="text/javascript" src="swipeoroony.min.js"></script>
+    <script type="text/javascript" src="swipeoroony.js"></script>
     <script type="text/javascript">
 
       function whichTransitionEndEvent() {
@@ -53,8 +53,10 @@
 
         var slides = $('.slides');
         var dotsSize = $('.slide').size();
+        var slidesLinks;
+
         slides.after(generateDots(dotsSize, 'js-slidesNavigation', 'js-slidesNavigationPage'));
-        var slidesLinks = $('.js-slidesNavigationPage');
+        slidesLinks = $('.js-slidesNavigationPage');
         initSwipe(slides, slidesLinks, 'js-slidesNavigationPage', DOCUMENT, TRANSITION);
 
       });
