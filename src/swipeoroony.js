@@ -1,26 +1,37 @@
 /* exported initSwipe, generateDots */
 
+'use strict';
+
 function initSwipe(object, links, linkClass, doc, transition) {
   object.on('touchstart', function(event) {
+    var pointStartX;
+    var pointDiffX;
+    var pointShift;
+    var positionStart;
+    var linkActive;
+    var index;
+    var galleryStatus;
+    var animationFrame;
     if (!object.is('.slides-are-fixing')) {
-      var pointStartX = event.originalEvent.touches[0].pageX;
-      var pointDiffX = 0;
-      var pointShift = 1;
-      var positionStart = object.offset().left;
-      var linkActive = links.filter('.' + linkClass + '-is-active');
-      var index = links.index(linkActive);
-      var galleryStatus = 'middle';
+      pointStartX = event.originalEvent.touches[0].pageX;
+      pointDiffX = 0;
+      pointShift = 1;
+      positionStart = object.offset().left;
+      linkActive = links.filter('.' + linkClass + '-is-active');
+      index = links.index(linkActive);
+      galleryStatus = 'middle';
       if (index === 0) {
         galleryStatus = 'start';
       } else if (index === (links.size() - 1)) {
         galleryStatus = 'end';
       }
       doc.on('touchmove', function(event) {
+        var pointDiffXMargin;
         pointDiffX = event.originalEvent.touches[0].pageX - pointStartX;
         if (Math.abs(pointDiffX) > 15) {
           event.preventDefault();
-          requestAnimationFrame(function() {
-            var pointDiffXMargin = pointDiffX < 0 ? 15 : -15;
+          animationFrame = requestAnimationFrame(function() {
+            pointDiffXMargin = pointDiffX < 0 ? 15 : -15;
             if (galleryStatus === 'start' && pointDiffX > 0) {
               pointShift = 4;
               pointDiffXMargin = -4;
@@ -33,6 +44,7 @@ function initSwipe(object, links, linkClass, doc, transition) {
         }
       }).on('touchend', function(event) {
         doc.off('touchmove touchend');
+        cancelAnimationFrame(animationFrame);
         requestAnimationFrame(function() {
           if (Math.abs(pointDiffX) > 15) {
             if (pointDiffX > 50 && galleryStatus !== 'start') {
@@ -57,7 +69,8 @@ function initSwipe(object, links, linkClass, doc, transition) {
 
 function generateDots(size, listClass, pageClass) {
   var navigation = '<ul class="' + listClass + ' js-dotsNavigation u-listReset">';
-  for (var index = 0; index < size; index++) {
+  var index;
+  for (index = 0; index < size; index++) {
     navigation = index === 0 ? navigation + '<li class="' + pageClass + ' ' + pageClass + '-is-active js-dotsPage-is-active js-dotsPage"></li>' : navigation + '<li class="' + pageClass + ' js-dotsPage"></li>';
   }
   navigation += '</ul>';
